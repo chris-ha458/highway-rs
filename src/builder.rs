@@ -3,7 +3,7 @@ use crate::traits::HighwayHash;
 use core::{default::Default, fmt::Debug, mem::ManuallyDrop};
 
 #[cfg(target_arch = "aarch64")]
-use crate::{aarch64::NeonHash,portable::PortableHash};
+use crate::{aarch64::NeonHash, portable::PortableHash};
 #[cfg(all(target_arch = "aarch64", feature = "std"))]
 use std::arch::is_aarch64_feature_detected;
 
@@ -250,9 +250,9 @@ impl HighwayHasher {
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
             3 => unsafe { NeonHash::finalize64(&mut self.inner.neon) },
             #[cfg(all(target_arch = "aarch64", feature = "std"))]
-            3 if is_aarch64_feature_detected!("neon") => {
-                unsafe { NeonHash::finalize64(&mut self.inner.neon) }
-            }
+            3 if is_aarch64_feature_detected!("neon") => unsafe {
+                NeonHash::finalize64(&mut self.inner.neon)
+            },
             #[cfg(all(target_family = "wasm", target_feature = "simd128"))]
             4 => unsafe { WasmHash::finalize64(&mut self.inner.wasm) },
             _ => unsafe { core::hint::unreachable_unchecked() },
@@ -273,9 +273,9 @@ impl HighwayHasher {
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
             3 => unsafe { NeonHash::finalize128(&mut self.inner.neon) },
             #[cfg(all(target_arch = "aarch64", feature = "std"))]
-            3 if is_aarch64_feature_detected!("neon") => {
-                unsafe { NeonHash::finalize128(&mut self.inner.neon) }
-            }
+            3 if is_aarch64_feature_detected!("neon") => unsafe {
+                NeonHash::finalize128(&mut self.inner.neon)
+            },
             #[cfg(all(target_family = "wasm", target_feature = "simd128"))]
             4 => unsafe { WasmHash::finalize128(&mut self.inner.wasm) },
             _ => unsafe { core::hint::unreachable_unchecked() },
@@ -296,9 +296,9 @@ impl HighwayHasher {
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
             3 => unsafe { NeonHash::finalize256(&mut self.inner.neon) },
             #[cfg(all(target_arch = "aarch64", feature = "std"))]
-            3 if is_aarch64_feature_detected!("neon") => {
-                unsafe { NeonHash::finalize256(&mut self.inner.neon) }
-            }
+            3 if is_aarch64_feature_detected!("neon") => unsafe {
+                NeonHash::finalize256(&mut self.inner.neon)
+            },
             #[cfg(all(target_family = "wasm", target_feature = "simd128"))]
             4 => unsafe { WasmHash::finalize256(&mut self.inner.wasm) },
             _ => unsafe { core::hint::unreachable_unchecked() },
